@@ -1,51 +1,22 @@
-var timerEl = document.getElementById('countdown');
-var mainEl = document.getElementById('main');
-var currenQuestionindex = 0;
+//Universal Variables
 
-var begin = window.confirm("Are you ready to begin? ")
-    if(begin == true) {
-        startquiz();}
 
-function startquiz(){
+//TODO:
+//Get options to register clicks
+//Establish "checkanswer" function
+//Setup scoreboard
+//you could just give them all a class that's the same and add an event listener to that class to trigger checkAnswer
 
-  function countdown(){
-    var timeleft = 90;
-    var timeInterval = setInterval(function() {
-    timerEl.textContent = timeleft;
-    
-    
-    if(timeleft === 0) {
-      clearInterval(timeInterval);
-      timerEl.textContent= "";
-      window.alert("Time's Up!")
-      return; 
-    }
 
-    timeleft--;
-    
-  }, 1000);
-  }
-
-  function askquestion() {
-    var currentQuestion = questions[currenQuestionindex]
-    question = currentQuestion.questionText;
-    option1 = currentQuestion.choices[0]
-    option2 = currentQuestion.choices[1]
-    option3 = currentQuestion.choices[2]
-    option4 = currentQuestion.choices[3]
-    addButton.addEventListener("click", function(){
-    if (correctAnswer === true)
-    window.alert("Correct!")
-    else 
-    window.alert("Incorrect!")
-    }
-    
-    )
-  }
-  
-  countdown()
-  askquestion()
-}
+var timerEl = document.getElementById("countdown");
+var mainEl = document.getElementById("main");
+var currentQuestionindex = 0;
+var listEl = document.getElementById("question");
+var li1 = document.getElementById("li1");
+var li2 = document.getElementById("li2");
+var li3 = document.getElementById("li3");
+var li4 = document.getElementById("li4");
+var buttonsdiv = document.getElementById("options")
 
 var questions = [
   {
@@ -74,13 +45,79 @@ var questions = [
     correctAnswer: "Tiger/Dragon"
   },
 ]
+
+
+
+//Begin the Quiz and countdown
+
+var begin = window.confirm("Are you ready to begin?")
+    if(begin == true) {
+        startquiz();}
+
+//Question looping
+
+function askquestion() {
+  var currentQuestion = questions[currentQuestionindex]
+  listEl.textContent = currentQuestion.questionText;
+  li1.textContent = currentQuestion.choices[0]
+  li2.textContent = currentQuestion.choices[1]
+  li3.textContent = currentQuestion.choices[2]
+  li4.textContent = currentQuestion.choices[3]
+};
+
+function countdown(){
+  var timeleft = 90;
+  var timeInterval = setInterval(function() {
+  timerEl.textContent = timeleft;
+  
+  
+  if(timeleft === 0) {
+    clearInterval(timeInterval);
+    timerEl.textContent= "";
+    window.alert("Time's Up!")
+    return; 
+  }
+
+  timeleft--;
+  
+}, 1000);
+}
+
+function startquiz(){
+  countdown()
+  askquestion()
+}
+
+function submitAnswer() {
+  // Grab value of which li element they currently have selected
+  buttonsdiv.addEventListener("click", function(event){
+    
+  })
+
+  // Check the answer
+  if (correctAnswer === true){
+    window.alert("Correct!")}
+    else {
+    window.alert("Incorrect!")
+    timeleft - 5;
+  }
+  currentQuestionindex++;
+  askquestion();
+} 
+
+function recordscore() {
+var name = window.prompt("What is your name?")
+console.log(name)
+localStorage.setItem("Username", name)
 scoreboard.textContent = score;
 var scoreboard = document.querySelector("#scoreboard")
 var score = localStorage.getItem("score")
-var score = localStorage.setItem("score")
+var addscore = localStorage.setItem("score")
 
-addButton.addEventListener("click", submitAnswer)
-submitAnswer.addEventListener("click", checkAnswer)
+}
+
+
+//addButton.addEventListener("click", submitAnswer)
 
 
 //Questions
