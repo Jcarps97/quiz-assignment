@@ -14,6 +14,7 @@ var li1 = document.getElementById("li1");
 var li2 = document.getElementById("li2");
 var li3 = document.getElementById("li3");
 var li4 = document.getElementById("li4");
+var entry = document.getElementById("entry");
 var currentQuestion;
 var timeleft = 90;
 var score;
@@ -75,7 +76,7 @@ function countdown(){
   if(timeleft === 0) {
     clearInterval(timeInterval);
     timerEl.textContent= "";
-    window.alert("Time's Up!")
+    window.alert("Time's Up! No points for you.")
     return; 
   }
 
@@ -98,6 +99,7 @@ function recordscore() {
   console.log(score)
   localStorage.setItem("Username", name)
   localStorage.setItem("score", score)
+  entry.textContent = localStorage.getItem("Username") + localStorage.getItem("score")
 }
 
 //submitting and checking answer
