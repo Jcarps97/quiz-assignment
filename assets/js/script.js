@@ -2,10 +2,8 @@
 
 
 //TODO:
-//Get options to register clicks
-//Establish "checkanswer" function
 //Setup scoreboard
-//you could just give them all a class that's the same and add an event listener to that class to trigger checkAnswer
+//Record timeleft
 
 
 var timerEl = document.getElementById("countdown");
@@ -16,7 +14,10 @@ var li1 = document.getElementById("li1");
 var li2 = document.getElementById("li2");
 var li3 = document.getElementById("li3");
 var li4 = document.getElementById("li4");
-var buttonsdiv = document.getElementById("options")
+var currentQuestion;
+var timeleft = 90;
+var score;
+var name;
 
 var questions = [
   {
@@ -57,7 +58,7 @@ var begin = window.confirm("Are you ready to begin?")
 //Question looping
 
 function askquestion() {
-  var currentQuestion = questions[currentQuestionindex]
+  currentQuestion = questions[currentQuestionindex]
   listEl.textContent = currentQuestion.questionText;
   li1.textContent = currentQuestion.choices[0]
   li2.textContent = currentQuestion.choices[1]
@@ -66,7 +67,6 @@ function askquestion() {
 };
 
 function countdown(){
-  var timeleft = 90;
   var timeInterval = setInterval(function() {
   timerEl.textContent = timeleft;
   
@@ -83,47 +83,48 @@ function countdown(){
 }, 1000);
 }
 
+//Core function
 function startquiz(){
   countdown()
   askquestion()
+  submitAnswer()
 }
-
-function submitAnswer() {
-  // Grab value of which li element they currently have selected
-  buttonsdiv.addEventListener("click", function(event){
-    
-  })
-
-  // Check the answer
-  if (correctAnswer === true){
-    window.alert("Correct!")}
-    else {
-    window.alert("Incorrect!")
-    timeleft - 5;
-  }
-  currentQuestionindex++;
-  askquestion();
-} 
 
 function recordscore() {
-var name = window.prompt("What is your name?")
-console.log(name)
-localStorage.setItem("Username", name)
-scoreboard.textContent = score;
-var scoreboard = document.querySelector("#scoreboard")
-var score = localStorage.getItem("score")
-var addscore = localStorage.setItem("score")
+  name = window.prompt("What is your name?")
+  console.log(name)
+  score = timeleft;
+  localStorage.setItem("Username", name)
+  localStorage.setItem("score", score)
+}
+
+//submitting and checking answer
+function submitAnswer() {
+
+  // Grab value of which li element they currently have selected
+  var buttonsdiv = document.getElementsByTagName("LI");
+  for (let i = 0; i < buttonsdiv.length; i++){
+    buttonsdiv[i].addEventListener("click", function(e){
+      if (e.target.textContent === currentQuestion.correctAnswer){
+        window.alert("Correct!");
+      }
+      else {
+        window.alert("Incorrect!")
+        timeleft = timeleft - 5;
+      }
+      currentQuestionindex++;
+      askquestion();
+    });
+  }
+recordscore();
 
 }
 
 
-//addButton.addEventListener("click", submitAnswer)
+// scoreboard.textContent = score;
+// var scoreboard = document.querySelector("#scoreboard")
+// var score = localStorage.getItem("score")
+// var addscore = localStorage.setItem("score")
 
 
-//Questions
-//1. Who is the protagonist of Konosuba? Naruto Uzumaki. Monkey D Luffy. (Kazuma Satou). Subaru Natsuki.
-//2. In the TV show "Overlord", how many of the Pleiades appeared on screen? 5. (6). 7. 8.
-//3. What vehicle from the TV series that bears the same name, is the Black Lagoon? Car. Truck. (Boat). Plane.
-//4. The TV show "No Game No Life" features a catchphrase with a dark history. What is that phrase? Exceslior. (Aschente). Nirvana. Vici.
-//5. The TV show "Toradora" gets its name from what two animals? Dog/Cat. Lizard/Spider. Fish/Bird. (Tiger/Dragon).
 
