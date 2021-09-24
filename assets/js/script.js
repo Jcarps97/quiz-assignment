@@ -18,6 +18,7 @@ var currentQuestion;
 var timeleft = 90;
 var score;
 var name;
+var timeInterval;
 
 var questions = [
   {
@@ -67,7 +68,7 @@ function askquestion() {
 };
 
 function countdown(){
-  var timeInterval = setInterval(function() {
+  timeInterval = setInterval(function() {
   timerEl.textContent = timeleft;
   
   
@@ -94,15 +95,14 @@ function recordscore() {
   name = window.prompt("What is your name?")
   console.log(name)
   score = timeleft;
+  console.log(score)
   localStorage.setItem("Username", name)
   localStorage.setItem("score", score)
 }
 
 //submitting and checking answer
 function submitAnswer() {
-
-  // Grab value of which li element they currently have selected
-  var buttonsdiv = document.getElementsByTagName("LI");
+  var buttonsdiv = document.getElementsByClassName("options");
   for (let i = 0; i < buttonsdiv.length; i++){
     buttonsdiv[i].addEventListener("click", function(e){
       if (e.target.textContent === currentQuestion.correctAnswer){
@@ -110,14 +110,20 @@ function submitAnswer() {
       }
       else {
         window.alert("Incorrect!")
-        timeleft = timeleft - 5;
+        timeleft = timeleft - 15;
       }
+      if (currentQuestionindex < 4){
       currentQuestionindex++;
-      askquestion();
+      askquestion();}
+      else {
+        clearInterval(timeInterval)
+        recordscore();
+        return timeleft;
+      }
     });
   }
-recordscore();
 
+//When 5th question, Question[4] is complete, stop timer.
 }
 
 
